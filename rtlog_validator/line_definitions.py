@@ -49,7 +49,7 @@ class Tag(dict):
     def tagSize(self):
         size = 0
         for i in self:
-            size += int(self[i].size)
+            size += int(self[i]["size"])
         return size
 
 
