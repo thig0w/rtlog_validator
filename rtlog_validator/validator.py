@@ -9,6 +9,49 @@ from rtlog_validator.line_definitions import RTLOG
 LOGGER = logging.getLogger(__name__)
 
 
+class LineInfo(dict):
+    """Class that holds line information"""
+
+    def __init__(self, text, tag, line_format):
+        logging.debug("Creating field")
+        self["text"] = text
+        self["tag"] = tag
+        self["errors"] = []
+        self.__rtlog_line_format = line_format
+
+    def add_error(self, error):
+        """Adds an error to the line error list"""
+        self["errors"].append(error)
+
+    def break_line(self):
+        """Breaks the fields of the line and return them as a list"""
+        bin_fields = Struct(self.__rtlog_line_format.struct_format).unpack_from(
+            self["text"].encode()
+        )
+        return [field.decode("utf-8") for field in bin_fields]
+
+    def validate_line_size(self):
+        """Checks if the line has the correct size"""
+        logging.debug(f"validate_line_size")
+        # Removing 1 from text since the line break doesn't count
+        if len(self["text"]) - 1 != self.__rtlog_line_format.tagSize():
+            self.add_error("ERR_LINE_SIZE")
+            return False
+        return True
+
+    def validate_line_terminator(self):
+        """Checks if the line has the correct terminator (\\n)"""
+        logging.debug(f"validate_line_terminator")
+        if not self["text"][-1].__eq__("\n"):
+            self.add_error("ERR_LINE_TERM")
+            return False
+        return True
+
+    def validate_data_type(self):
+        """Checks if the fields have the correct data type (string, number)"""
+        logging.debug(f"validate_data_type")
+
+
 class Validator(dict):
     """Loads a RTLOG.DAT file and validates it"""
 
@@ -30,33 +73,49 @@ class Validator(dict):
         logging.debug(f"Building dictionary")
         self.update(
             {
-                i + 1: {"text": self.rtlog_dat[i], "tag": self.rtlog_dat[i][0:5]}
+                i
+                + 1: LineInfo(
+                    self.rtlog_dat[i],
+                    self.rtlog_dat[i][0:5],
+                    self.rtlog_format.get(self.rtlog_dat[i][0:5]),
+                )
                 for i in range(self.rtlog_dat.__len__())
             }
         )
+        self.error_lines = []
 
     def __str__(self):
         return json.dumps(self)
 
-    def dump_separated(self, separator=b"|"):
+    def __set_error(self, line_no):
+        """Sets error_ind, if true there is errors on the RTLOG file"""
+        self.error_ind = True
+        if not line_no in self["error_lines"]:
+            self.error_lines.append(line_no)
+
+    def dump_separated(self, separator="|"):
+        """Method to separate the RTLOG using a defined separator"""
         logging.debug(
             f"dumping rtlog_file ({self.__rtlog_file}) using separator = {separator}"
         )
         for line_no in self:
-            format = self.rtlog_format[self[line_no]["tag"]].struct_format
-            print(separator.join(Struct(format).unpack_from(self[line_no])))
+            print(separator.join(self[line_no].break_line()))
 
-    def validate_size(self):
-        logging.debug(f"Validating size of rtlog_file = {self.__rtlog_file}")
+    def call_line_validators(self):
+        """Call all methods from LineInfo class that contains validate_ in the name"""
+        logging.debug(f"Calling all line validators")
         for line_no in self:
-            if (
-                self.rtlog_format[self[line_no]["tag"]].tagSize()
-                != len(self[line_no]["text"]) - 1
-            ):
-                logging.debug(f"Found line size error")
-                self[line_no]["errors"] = "ERR_LINE_SIZE"
-                self.error_ind = True
+            for validator in [
+                getattr(self[line_no], valmethod)
+                for valmethod in dir(self[line_no])
+                if "validate_" in valmethod
+            ]:
+                logging.debug(f"Method {validator} will be called for line {line_no}")
+                if not validator():
+                    logging.debug(f"Found error on line: {line_no}")
+                    self.__set_error(line_no)
 
 
 if __name__ == "__main__" or __name__ == "__builtin__":
     x = Validator()
+    x.dump_separated()
