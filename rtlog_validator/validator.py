@@ -50,6 +50,18 @@ class LineInfo(dict):
     def validate_data_type(self):
         """Checks if the fields have the correct data type (string, number)"""
         logging.debug(f"validate_data_type")
+        line = self.break_line()
+        for i in range(len(line)):
+            trimmed_field = line[i].strip()
+            if self.__rtlog_line_format[i + 1]["type"].__eq__("Number") and (
+                not trimmed_field.isdigit() and not trimmed_field.__eq__("")
+            ):
+                logging.debug(
+                    f"Field {self.__rtlog_line_format[i + 1]['name']}, must be numeric, got {line[i]}"
+                )
+                self.add_error("ERR_FIELD_NUMBER")
+                return False
+        return True
 
 
 class Validator(dict):
@@ -90,7 +102,7 @@ class Validator(dict):
     def __set_error(self, line_no):
         """Sets error_ind, if true there is errors on the RTLOG file"""
         self.error_ind = True
-        if not line_no in self["error_lines"]:
+        if not line_no in self.error_lines:
             self.error_lines.append(line_no)
 
     def dump_separated(self, separator="|"):
@@ -119,3 +131,4 @@ class Validator(dict):
 if __name__ == "__main__" or __name__ == "__builtin__":
     x = Validator()
     x.dump_separated()
+    x.call_line_validators()
