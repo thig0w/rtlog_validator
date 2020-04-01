@@ -132,3 +132,7 @@ if __name__ == "__main__" or __name__ == "__builtin__":
     x = Validator()
     x.dump_separated()
     x.call_line_validators()
+    x = Validator(
+        rtlog_file="C:\\Users\\LOGIC\\Desktop\\RTLOG_30017_20200323_20200323143028.DAT"
+    )
+    # x2 = Validator(rtlog_file="C:\\Users\\LOGIC\\Desktop\\RTLOG_30000_20200320_20200320093012.DAT")
