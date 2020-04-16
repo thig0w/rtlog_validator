@@ -71,6 +71,7 @@ class Validator(dict):
         self,
         format_file="RTLOG_format_14.1.3.csv",
         rtlog_file="C:\\Users\\LOGIC\\Desktop\\RTLOG_30010_20200125_20200128212026.DAT",
+        rtlog_string=None,
     ):
         logging.debug(
             f"Initializing Validator: format_file = {format_file}, rtlog_file = {rtlog_file}"
@@ -79,9 +80,14 @@ class Validator(dict):
         self.__rtlog_file = rtlog_file
         self.error_ind = False
         self.rtlog_format = RTLOG(format_file)
-        logging.debug(f"Open File")
-        with open(rtlog_file, "r") as f:
-            self.rtlog_dat = f.readlines()
+
+        if rtlog_string is not None:
+            self.rtlog_dat = rtlog_string.splitlines()
+        else:
+            logging.debug(f"Open File")
+            with open(rtlog_file, "r") as f:
+                self.rtlog_dat = f.readlines()
+
         logging.debug(f"Building dictionary")
         self.update(
             {
@@ -105,13 +111,22 @@ class Validator(dict):
         if not line_no in self.error_lines:
             self.error_lines.append(line_no)
 
+    def separate_file(self, separator="|"):
+        logging.debug(
+            f"separating rtlog_file ({self.__rtlog_file}) using separator = {separator}"
+        )
+        separated = []
+        for line_no in self:
+            separated.append(separator.join(self[line_no].break_line()))
+
+        return "\n".join(separated)
+
     def dump_separated(self, separator="|"):
         """Method to separate the RTLOG using a defined separator"""
         logging.debug(
             f"dumping rtlog_file ({self.__rtlog_file}) using separator = {separator}"
         )
-        for line_no in self:
-            print(separator.join(self[line_no].break_line()))
+        print(self.separate_file(separator))
 
     def call_line_validators(self):
         """Call all methods from LineInfo class that contains validate_ in the name"""

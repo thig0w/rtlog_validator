@@ -1,1 +1,4 @@
 flask
+flask_restplus
+#added the line below to avoid flask_restplus problem
+Werkzeug==0.16.1

@@ -2,12 +2,18 @@
 import csv
 import json
 import logging
+import os
 import re
 
-from rtlog_validator import get_data_path
+# from rtlog_validator import get_data_path
 
 # Initial Program Setup
 LOGGER = logging.getLogger(__name__)
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+
+def get_data_path(path):
+    return os.path.join(_ROOT, "data", path)
 
 
 class Field(dict):

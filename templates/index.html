@@ -3,10 +3,15 @@
 {% block body %}
 <!--libs-->
 <style>
-    .styled-background {
+    .warning-background {
         background-color: #ff7;
         color: black;
     }
+    .error-background {
+        background-color: #E12834;
+        color: white;
+    }
+
 </style>
 <link rel="stylesheet" href="/static/js/lib/codemirror.css">
 <link rel="stylesheet" href="/static/js/themes/hopscotch.css">
@@ -29,14 +34,16 @@
 <div class="row">
     <div class="col-md-3 container"><textarea></textarea></div>
     <div class="col-md-9 container">
-        <form><textarea id="code" name="code" placeholder="Drag and Drop RTLOG file Here..."></textarea></form>
+        <form id="code-editor"><textarea id="code" name="code" placeholder="Drag and Drop RTLOG file Here..."></textarea></form>
     </div>
 </div>
 <script>
     //document.addEventListener('DOMContentLoaded', () => {
+        var original_content;
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             lineNumbers: true,
-            styleSelectedText: true
+            styleSelectedText: true,
+            readOnly: true
         });
 
         editor.setOption("theme","hopscotch");
@@ -44,10 +51,6 @@
 
         //clear the editor, paste file
         editor.on("drop",function(editor,e) {
-            if(e.dataTransfer.files.length !== 0) {
-                editor.setValue("");
-            }
-
             //prevent default drop event
             e.preventDefault();
 
@@ -55,17 +58,60 @@
             var reader = new FileReader();
             reader.onload = function(){
                 var text = reader.result;
+                original_content = text;
                 editor.setValue(text);
             };
             reader.readAsText(e.dataTransfer.files[0]);
         });
 
-        editor.on("change",function(editor,e) {
-            if(editor.getValue().substring(0,5) !== 'FHEAD')
-                return
-            editor.markText({line: 1, ch: 1}, {line: 1, ch: 5}, {className: "styled-background"});
+        editor.on("beforeChange",function(editor,e) {
+            //Call validator
+            var jsonObj = {"rtlog_string" : original_content }
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Typical action to be performed when the document is ready:
+                    var response = JSON.parse(xhttp.responseText);
+                    e.update(e.from,e.to,response['rtlog_string'].split('\n'),e.origin);
+                }
+            };
+            xhttp.open("POST", "/api_resa/validate/", false);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(JSON.stringify(jsonObj));
         });
 
+        editor.on("change",function(editor,e) {
+            editor.getAllMarks().forEach((mark) => { mark.clear() });
+            editor.markText({line: 1, ch: 0}, {line: 1, ch: 5}, {className: "error-background tt"});
+            //$(".tt").attr("title","<b>Hello</b><br>teste");
+        });
+
+        editor.on("update", function(editor,e) {
+            console.log("update trigger");
+            console.log(e);
+            $(".tt").tooltip({
+                placement: 'top',
+                title: "<b>Hello</b><br>teste",
+                html: true
+            });
+        });
+
+    //var mutationObserver = new MutationObserver(function(mutations) {
+    //    mutations.forEach(function(mutation) {
+    //    if (mutation.attributeName === 'class')
+    //        console.log(mutation);
+    //    });
     //});
+    //mutationObserver.observe(document.getElementById("code-editor"), {
+    //    attributes: true,
+    //    characterData: true,
+    //    childList: true,
+    //    subtree: true,
+    //    attributeOldValue: true,
+    //    characterDataOldValue: true
+    //});
+    //});
+
 </script>
 {% endblock %}
