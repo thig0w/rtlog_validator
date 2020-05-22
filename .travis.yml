@@ -1,5 +1,3 @@
-# pip install travis-encrypt
-
 language: python
 python:
   - "3.8"
