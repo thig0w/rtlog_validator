@@ -11,5 +11,6 @@ deploy:
   api_key:
     # heroku auth:token
     secure: $HEROKU_TOKEN
+    app: rtlog-validator
   on:
     branch: master
