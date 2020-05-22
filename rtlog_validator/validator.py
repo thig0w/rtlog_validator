@@ -142,6 +142,33 @@ class Validator(dict):
                     logging.debug(f"Found error on line: {line_no}")
                     self.__set_error(line_no)
 
+    def get_line_marks(self):
+        """Get mark positions for the UI"""
+        logging.debug(f"Dumping line position marks")
+        marks = [
+            {
+                "line": line_no - 1,
+                "start_pos": self.rtlog_format[self[line_no]["tag"]][field]["start"]
+                + field
+                - 1,
+                "end_pos": self.rtlog_format[self[line_no]["tag"]][field]["end"]
+                + field,
+                "name": f"{self[line_no]['tag']}{field}",
+            }
+            for line_no in self
+            for field in self.rtlog_format[self[line_no]["tag"]]
+        ]
+        logging.debug(f"Dumping tooltips")
+        tooltips = [
+            {
+                "name": f"{tag}{field}",
+                "infos": f"<b>{self.rtlog_format[tag][field]['name']}</b><br><u>Type:</u> {self.rtlog_format[tag][field]['type']}<br><u>Desc:</u> {self.rtlog_format[tag][field]['desc']}<br><u>Default:</u> {self.rtlog_format[tag][field]['default']}",
+            }
+            for tag in self.rtlog_format
+            for field in self.rtlog_format[tag]
+        ]
+        return marks, tooltips
+
 
 if __name__ == "__main__" or __name__ == "__builtin__":
     x = Validator()

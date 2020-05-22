@@ -40,6 +40,9 @@
 <script>
     //document.addEventListener('DOMContentLoaded', () => {
         var original_content;
+        var rtlog_format;
+        var line_marks;
+        var tooltips;
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             lineNumbers: true,
             styleSelectedText: true,
@@ -73,6 +76,9 @@
                 if (this.readyState == 4 && this.status == 200) {
                     // Typical action to be performed when the document is ready:
                     var response = JSON.parse(xhttp.responseText);
+                    rtlog_format = response['rtlog_format'];
+                    line_marks = response['line_marks'];
+                    tooltips = response['tooltips'];
                     e.update(e.from,e.to,response['rtlog_string'].split('\n'),e.origin);
                 }
             };
@@ -83,18 +89,32 @@
 
         editor.on("change",function(editor,e) {
             editor.getAllMarks().forEach((mark) => { mark.clear() });
-            editor.markText({line: 1, ch: 0}, {line: 1, ch: 5}, {className: "error-background tt"});
-            //$(".tt").attr("title","<b>Hello</b><br>teste");
+            line_marks.forEach((el) => {
+                    editor.markText({line: el['line'], ch: el['start_pos']},
+                                    {line: el['line'], ch: el['end_pos']},
+                                    {className: el['name']});
+                }
+            );
+            //editor.markText({line: 1, ch: 0}, {line: 1, ch: 5}, {className: "error-background tt"});
         });
 
         editor.on("update", function(editor,e) {
             console.log("update trigger");
             console.log(e);
-            $(".tt").tooltip({
-                placement: 'top',
-                title: "<b>Hello</b><br>teste",
-                html: true
+            tooltips.forEach((el)=>{
+                $("."+el['name']).each((index, element) => {
+                    $(element).tooltip({
+                        placement: 'top',
+                        title: el['infos'],
+                        html: true
+                    });
+                })
             });
+            //$(".tt").tooltip({
+            //    placement: 'top',
+            //    title: "<b>Hello</b><br>teste",
+            //    html: true
+            //});
         });
 
     //var mutationObserver = new MutationObserver(function(mutations) {
