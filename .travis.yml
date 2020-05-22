@@ -9,6 +9,7 @@ script:
 deploy:
   provider: heroku
   api_key:
+    # heroku auth:token
     secure: $HEROKU_TOKEN
   on:
     branch: master
