@@ -1,0 +1,17 @@
+# pip install travis-encrypt
+
+language: python
+python:
+  - "3.8"
+cache: pip
+install:
+  - pip install -r requirements.txt
+script:
+  - python -c "pass"
+#deploy:
+#  provider: pypi
+#  user: "__token__"
+#  password: $PYPI_TOKEN
+#  distributions: "sdist bdist_wheel"
+#  on:
+#    branch: master
