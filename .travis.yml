@@ -1,16 +1,15 @@
 language: python
 python:
-  - "3.8"
+- '3.8'
 cache: pip
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 script:
-  - python -c "pass"
+- python -c "pass"
 deploy:
   provider: heroku
   api_key:
-    # heroku auth:token
-    secure: $HEROKU_TOKEN
+    secure: cazCQsT+FGfFOww+mOElJJZle2GcOhv7GFPXOWuFOyTbxCgxgpUXxWtOvsENS4ZV9UNXUB9UF89W6sK2sWKk/abxwf3g+jEodnMI2DS3iRFN5J/TXqMjV6zPEMejCG1T1ViHbVj4JZhjJuhlFYTx8MW/sBoySd3hzed7Qodrh1C1dbVQMbypz260B6ClnVH+uXBUEg3a1oAbd1NMGQBzcW4vlvobxJ3LHxzqJT4Wbp5B7HnP2CJUfkMo/TBreRnP5159SZsYBLZ4BKltPcY1nsYhgmQv2lQpNVeQYcsqtXQgcHOyInYWcZ9LkduWOxnNl4JIKJyU1dXVG4IYdhittn6+gtBmKnKb0lcMSKF1zDSBBadPwpuNqQQDCs3LzwCxIZLJXlmhqzsI3zWTPiAD39iX1764yQddVGWlVTnWEuiN/Rhku4mfb7H7ZSr4dN5yBNbWRIM6s37s0JcHfjrRAxmE8MOInd8al5SJeC0O5Pa/Z/+27YiD0Tz6hoOtdnRp1yPgi0oTLUQNdG/ElSDAQelOyH8hnE6+5yJX+eK954igZzbF3OWHvFhVTSTmmvr8mOYzzT0GYCdQdx0Zmub7v8Cruwmizjmz7zbRRi+grOfhONMqEiyJY/XjPKvFtpY/FNdYXdRw+xajBi4YFo6JgAqeQrK34ckzIAQB7vN4/KQ=
     app: rtlog-validator
-  on:
+  true:
     branch: master
