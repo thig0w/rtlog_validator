@@ -6,10 +6,9 @@ install:
   - pip install -r requirements.txt
 script:
   - python -c "pass"
-#deploy:
-#  provider: pypi
-#  user: "__token__"
-#  password: $PYPI_TOKEN
-#  distributions: "sdist bdist_wheel"
-#  on:
-#    branch: master
+deploy:
+  provider: heroku
+  api_key:
+    secure: $HEROKU_TOKEN
+  on:
+    branch: master
