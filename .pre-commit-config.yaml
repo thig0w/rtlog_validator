@@ -8,3 +8,8 @@ repos:
     rev: v2.3.0  # Use the ref you want to point at
     hooks:
       - id: fix-encoding-pragma
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: trailing-whitespace
+      - id: requirements-txt-fixer
+      - id: mixed-line-ending
