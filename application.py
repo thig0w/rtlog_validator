@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import os
+
 from flask import Flask, render_template
+from namespace_resa import namespace_resa
+from flask_restplus import Api
 
 app = Flask(__name__)
 
@@ -10,24 +12,11 @@ def index():
     return render_template("index.html")
 
 
-# @app.route("/<string:name>")
-# def hello(name):
-#     return f"Hello, {name}!"
-#
-#
-# @app.route("/hello", methods=["POST"])
-# def hello_form():
-#     name = request.form.get("name")
-#     return render_template("index_old.html", headline=name)
+api = Api(app, version="0.1", title="RPK Api", description="Having fun", doc="/doc/")
+api.add_namespace(namespace_resa)
 
 if __name__ == "__main__" or __name__ == "__builtin__":
-    from namespace_resa import namespace_resa
-    from flask_restplus import Api
-
-    api = Api(
-        app, version="0.1", title="RPK Api", description="Having fun", doc="/doc/"
-    )
-    api.add_namespace(namespace_resa)
+    import os
 
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
