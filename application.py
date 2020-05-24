@@ -19,6 +19,8 @@ def index():
 #     name = request.form.get("name")
 #     return render_template("index_old.html", headline=name)
 
+print(__name__)
+
 
 if __name__ == "__main__" or __name__ == "__builtin__":
     from namespace_resa import namespace_resa
