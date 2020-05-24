@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -19,9 +20,6 @@ def index():
 #     name = request.form.get("name")
 #     return render_template("index_old.html", headline=name)
 
-print(__name__)
-
-
 if __name__ == "__main__" or __name__ == "__builtin__":
     from namespace_resa import namespace_resa
     from flask_restplus import Api
@@ -31,4 +29,5 @@ if __name__ == "__main__" or __name__ == "__builtin__":
     )
     api.add_namespace(namespace_resa)
 
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
