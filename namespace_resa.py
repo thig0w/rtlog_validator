@@ -2,8 +2,8 @@
 
 from flask_restplus import Namespace, Resource, fields
 
-from rtlog_validator import Validator
 import rtlog_validator
+from rtlog_validator import Validator
 
 namespace_resa = Namespace("api_resa", description="API operations")
 
@@ -16,8 +16,7 @@ model_rtlog_version = namespace_resa.model(
 )
 
 model_rtlog_versions = namespace_resa.model(
-    "rtlog_versions",
-    {"versions": namespace_resa.as_list(fields.Nested(model_rtlog_version))},
+    "rtlog_versions", namespace_resa.as_list(model_rtlog_version)
 )
 
 model_line_mark = namespace_resa.model(
@@ -160,13 +159,15 @@ class ResaRTLOGFormat(Resource):
 
 @namespace_resa.route("/rtlog_versions/")
 class ResaRTLOGVersions(Resource):
-    @namespace_resa.marshal_list_with(model_rtlog_format)
-    def post(self):
+    @namespace_resa.marshal_list_with(model_rtlog_versions)
+    def get(self):
         """
         Get available file formats/versions
         """
         versions = rtlog_validator.get_rtlog_format_versions()
 
-        return [
-            {"version": version, "filename": versions[version]} for version in versions
+        payload = [
+            {"version": version, "file_name": versions[version]} for version in versions
         ]
+
+        return payload
