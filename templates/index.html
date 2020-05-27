@@ -3,6 +3,9 @@
 {% block body %}
 <!--libs-->
 <style>
+    .field-background {
+        background-color: #524451;
+    }
     .warning-background {
         background-color: #ff7;
         color: black;
@@ -11,6 +14,16 @@
         background-color: #E12834;
         color: white;
     }
+    .custom-file-label::after {
+        background-color: #dc3545!important;
+        color: inherit;
+        border-color: inherit;
+    }
+
+
+
+
+
 
 </style>
 <link rel="stylesheet" href="/static/js/lib/codemirror.css">
@@ -32,9 +45,31 @@
 <!--    </div>-->
 <!--</div>-->
 <div class="row">
-    <div class="col-md-3 container"><textarea></textarea></div>
+
+    <div class="col-md-3 container">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text bg-danger text-light border-dark""
+                for="inputGroupSelect01">Version</label>
+            </div>
+            <select class="custom-select bg-secondary text-light border-dark"" id="inputGroupSelect01">
+            <option selected value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input bg-secondary text-light btn-danger"
+                       id="inputGroupFile02">
+                <label class="custom-file-label bg-secondary text-light border-dark"
+                       for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+            </div>
+        </div>
+    </div>
     <div class="col-md-9 container">
-        <form id="code-editor"><textarea id="code" name="code" placeholder="Drag and Drop RTLOG file Here..."></textarea></form>
+        <form id="code-editor"><textarea id="code" name="code"
+                                         placeholder="Drag and Drop RTLOG file Here..."></textarea></form>
     </div>
 </div>
 <script>
@@ -92,10 +127,9 @@
             line_marks.forEach((el) => {
                     editor.markText({line: el['line'], ch: el['start_pos']},
                                     {line: el['line'], ch: el['end_pos']},
-                                    {className: el['name']});
+                                    {className: el['name'] +' field-background'});
                 }
             );
-            //editor.markText({line: 1, ch: 0}, {line: 1, ch: 5}, {className: "error-background tt"});
         });
 
         editor.on("update", function(editor,e) {
@@ -110,28 +144,13 @@
                     });
                 })
             });
-            //$(".tt").tooltip({
-            //    placement: 'top',
-            //    title: "<b>Hello</b><br>teste",
-            //    html: true
-            //});
         });
 
-    //var mutationObserver = new MutationObserver(function(mutations) {
-    //    mutations.forEach(function(mutation) {
-    //    if (mutation.attributeName === 'class')
-    //        console.log(mutation);
-    //    });
-    //});
-    //mutationObserver.observe(document.getElementById("code-editor"), {
-    //    attributes: true,
-    //    characterData: true,
-    //    childList: true,
-    //    subtree: true,
-    //    attributeOldValue: true,
-    //    characterDataOldValue: true
-    //});
-    //});
+
+
+
+
+
 
 </script>
 {% endblock %}

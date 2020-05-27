@@ -1,0 +1,178 @@
+NOMA DA LINHA;NOME DO CAMPO;TIPO;DEFAULT;DESCRIÇÃO
+FHEAD;File Type Record Descriptor;Char(5);FHEAD;Identifies file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;File Type Definition;Char(4);RTLG;Identifies file as Oracle Retail TLOG.
+;File Create Date;Char(14);Create date;Date and time file was written by external system (YYYYMMDDHHMMSS).
+;Business Date;Char(8);Business Date to process;Business date of transactions (YYYYMMDD).
+;Location Number;Char(10);Specified by external system;Store or warehouse identifier.
+;Reference Number;Char(30);Specified by external system;This may contain the Polling ID associated with the consolidated TLOG file or used for other purpose.
+;RTLOG Originating System;Char(3);POS;Identifies the system the RTLOG file originated from. Valid values are OMS and POS.
+THEAD;File Type Record Descriptor;Char(5);THEAD;Identifies file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Register;Char(5);;Till used at the store.
+;Transaction Date;Char(14);Transaction date;Date for the transactions that were processed at the POS (YYYYMMDDHHMMSS).
+;Transaction Number;Number(10);Transaction identifier.;If sa_system_options, wkstation_tran_append_ind is Y, the first 3 digits indicate the workstation ID and last 7 digits indicate the transaction number.
+;Cashier;Char(10);;Cashier identifier.
+;Salesperson;Char(10);;Salesperson identifier.
+;Transaction Type;Char(6);Refer to TRAT code_type for a list of valid types.;Transaction type.
+;Sub-transaction type;Char(6);Refer to TRAS code_type for a list of valid types.;Sub-transaction type. For sale, it can be employee, drive-off, and so on.
+;Orig_tran_no;Number(10);;Populated only for post-void transactions. Transaction number for the original transaction that will be cancelled.
+;Orig_reg_no;Char(5);;Populated only for post-void transactions. Register number from the original transaction.
+;Reason Code;Char(6);Refer to REAC code_type for a list of valid codes. If the transaction type is PAIDOU and the sub transaction type is MV or EV, the valid codes come from the non_merch_code_head table.;Reason entered by the cashier for some transaction types. Required for Paid In and Paid out transaction types, but can also be used for voids, returns, and so on.
+;Vendor Number;Char(10);;Supplier ID for a merchandise vendor paid out transaction
+;Vendor Invoice Number;Char(30);;Invoice number for a vendor paid out transaction.
+;Payment Reference Number;Char(16);;The reference number of the tender used for a vendor payout. This could be the money order number, check number, and so on.
+;Proof of Delivery Number;Char(30);;Proof of receipt number given by the vendor at the time of delivery. This field is populated for a vendor paid out transaction.
+;Reference Number 1;Char(30);Number associated with a particular transaction, for example, whether for a Store Conditions transaction.;The SA_REFERENCE table defines what this field can contain for each transaction type.
+;Reference Number 2;Char(30);;Second generic reference number.
+;Reference Number 3;Char(30);;Third generic reference number.
+;Reference Number 4;Char(30);;Fourth generic reference number.
+;Value Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the value.
+;Value;Number(20);;Value, with 4 implied decimal places. Populated by the retailer for TOTAL transaction, populated by ReSA for SALE and RETURN transactions.
+;Banner id;Number(4);;Banner ID of the location.
+;Rounded Amount Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of rounded amount.
+;Rounded Amount;Number(20);;Total rounded amount, with 4 implied decimal places.
+;Rounded Off Sign;Char(1);;Refer to SIGN code_type for a list of valid codes.
+;Rounded Off Amount;Number(20);;Rounded off amount, with 4 implied decimal places
+;Credit Promotion Id;Char(10);;Credit Promotional ID.
+;Reference Number 25;Char(30);;
+;Reference Number 26;Char(30);;
+;Reference Number 27;Char(30);;
+;Transaction Processing System;Char(3);Valid values are OMS and POS.;Contains the ID of the system that processed the transaction.
+TCUST;File Type Record Descriptor;Char(5);TCUST;Identifies the file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Customer ID;Char(16);Customer identifier;The ID number of a customer.
+;Customer Type ID;Char(6);Refer to CIDT code_type for a list of valid types.;Customer ID type.
+;Customer Name;Char(120);;Customer name.
+;Address 1;Char(240);;Customer address.
+;Address 2;Char(240);;Additional field for customer address.
+;City;Char(120);;City.
+;State;Char(12);State identifier;State.
+;Zip Code;Char(30);Zip identifier;Zip code.
+;Country;Char(3);;Country.
+;Home Phone;Char(20);;Telephone number at home.
+;Work Phone;Char(20);;Telephone number at work.
+;E-mail;Char(100);;E-mail address.
+;Birthdate;Char(8);;Date of birth. (YYYYMMDD)
+CATT;File Type Record Descriptor;Char(5);CATT;Identifies file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Attribute type;Char(6);Refer to SACA code_type for a list of valid types.;Type of customer attribute
+;Attribute value;Char(6);Refer to members of SACA code_type for a list of valid values.;Value of customer attribute.
+TITEM;File Type Record Descriptor;Char(5);TITEM;Identifies file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Item Status;Char(6);Refer to SASI code_type for a list of valid codes.;Status of the item within the transaction. Valid values are:
+;Item Type;Char(6);Refer to SAIT code_type for a list of valid codes.;Identifies what type of item is transmitted.
+;Item number type;Char(6);Refer to UPCT code_type for a list of valid codes.;Identifies the type of item number if the item type is ITEM or REF.
+;Format ID;Char(1);VPLU format ID;Used to interpret VPLU items.
+;Item;Char(25);Item identifier;Identifies the merchandise item.
+;Reference Item;Char(25);Item identifier;Identifies the sub-transaction level merchandise item.
+;Non-Merchandise Item;Char(25);Item identifier;Identifies a non-merchandise item.
+;Voucher;Char(25);;Gift certificate number.
+;Department;Number(4);Identifies the department to which this item belongs.;This is filled in by saimptlog.
+;Class;Number(4);Class of the item;Class of item sold or returned. Not required from a retailer. This is filled in by saimptlog.
+;Subclass;Number(4);Subclass of the item;Subclass of the item sold or returned. Not required from a retailer. This is filled in by saimptlog.
+;Quantity Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the quantity
+;Quantity;Number(12);;Number of items purchased, with 4 decimal places.
+;Selling Unit of Measure;Char(4);;Unit of measure of the item’s quantity.
+;Unit Retail;Number(20);;Unit retail, with 4 implied decimal places.
+;Override Reason;Char(6);Refer to ORRC code_type for a list of valid codes.;This column is populated when an item's price has been overridden at the POS to define why it was overridden.
+;Original Unit Retail;Number(20);;Value, with 4 implied decimal places. This column is populated when the item's price was overridden at the POS and the item's original unit retail is known.
+;Taxable Indicator;Char(1);Refer to YSNO code_type for a list of valid codes.;Indicates whether or not item is taxable.
+;Pump;Char(8);;Fuel pump identifier.
+;Reference Number 5;Char(30);;Number associated with a particular item within a transaction, for example, special order number. The sa_reference table defines what this field can contain for each transaction type.
+;Reference Number 6;Char(30);;Second generic reference number at the item level.
+;Reference Number 7;Char(30);;Third generic reference number at the item level.
+;Reference Number 8;Char(30);;Fourth generic reference number at the item level.
+;Item_swiped_ind;Char(1);Refer to YSNO code_type for a list of valid codes.;Indicates if the item was automatically entered into the POS system or if it had to be manually keyed.
+;Return Reason Code;Char(6);;Refer to SARR code_type for a list of valid codes. The reason an item was returned.
+;Salesperson;Char(10);;The salesperson who sold the item.
+;Expiration_date;Char(8);;Gift certificate expiration date (YYYYMMDD).
+;Drop Ship Ind;Char(1);;Refer to YSNO code type for a list of valid codes. Indicates whether the item is part of a drop shipment.
+;Uom_qty;Number(12);;Quantity of items purchased in the given UOM, with 4 decimal places.
+;Catchweight_ind;Char(1);Valid values are Y and N.;Identifies if the item is a catchweight item.
+;Selling item;Char(25);Item identifier;Identifies the selling item.
+;Customer order line no;Number(6);;Identifies the customer order number.
+;Media id;Number(10);;Identifies the customer media ID.
+;Total Igtax Amount;Number(21);;Contains the Igtax amount.
+;Unique ID;Char(128);;
+;Customer Order Number;Char(48);;Contains the customer order ID.
+;Customer Order Date;Char(14);;Contains the customer order date. Format is: YYYYMMDDHHMMSS
+;Fulfillment Order Number;Char(48);;Contains the order ID of the fulfillment order.
+;No Inventory Return;Char(1);;Indicates if there is an associated inventory with the return transaction with an External Customer Order sales type.
+;Sales Type;Char(1);;Indicates if the transaction is an In Store Customer Order, External Customer Order, or Regular Sale.
+;Return Warehouse;Char(10);;Contains the ID of the physical warehouse to which the inventory is returned.
+;Return Disposition;Char(10);;Contains the return disposition of the returned items.
+IDISC;File Type Record Descriptor;Char(5);IDISC;Identifies the file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;RMS Promotion Number;Char(6);Refer to PRMT code_type for a list of valid types.;The RMS promotion type.
+;Discount Reference Number;Number(10);;Discount reference number associated with the discount type. For example, if the discount type is a promotion, this contains the promotion number.
+;Discount Type;Char(6);Refer to SADT code_type for a list of valid types.;The type of discount within a promotion. This allows a retailer to further break down coupon discounts within the In-store promotion, for example.
+;Coupon Number;Char(16);;Number of a store coupon used as a discount.
+;Coupon Reference Number;Char(16);;Additional information about the coupon, usually contained in a second bar code on the coupon.
+;Quantity Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the quantity.
+;Quantity;Number(12);;The quantity purchased for which the discount is applied, with 4 implied decimal places.
+;Unit Discount Amount;Number(20);;Unit discount amount for this item, with 4 implied decimal places.
+;Reference Number 13;Char(30);Number associated with a particular transaction type at the discount level.;The sa_reference table defines what this field can contain for each transaction type.
+;Reference Number 14;Char(30);;Second generic reference number at the discount level.
+;Reference Number 15;Char(30);;Third generic reference number at the discount level.
+;Reference Number 16;Char(30);;Fourth generic reference number at the discount level.
+;Uom_qty;Number(12);;Quantity of items purchased in the given UOM with 4 decimal places.
+;Catchweight_ind;Char(1);Valid values are Y and N.;Identifies if the item is a catchweight item.
+;Promo component;Number(10);;If the discount is a promotion, this field contains the promotion component value associated with the promotion (discount reference number).
+IGTAX;File Type Record Descriptor;Char(5);IGTAX;Identifies the file record typ.e
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Tax Authority;Number(10);;
+;Igtax Code;Char(6);Refer to tax_code/vat_code of tax_codes/vat_codes tables.;IGtax code (tax code/VAT code) to represent whether it is a State, City, or some other tax code/VAT code.
+;Igtax Rate;Number(20);;Igtax rate, with 4 implied decimal places.
+;Igtax Amount Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the Igtax amount.
+;Igtax Amount;Number(21);;Total igtax amount for this item, with 5 implied decimal places.
+;Reference Number 21;Char(30);;
+;Reference Number 22;Char(30);;
+;Reference Number 23;Char(30);;
+;Reference Number 24;Char(30);;
+TTAX;File Type Record Descriptor;Char(5);TTAX;Identifies the file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Tax Code;Char(6);Refer to TAXC code_type for as list of valid types.;Tax code (tax code/VAT code) to represent whether it is a State, City, or some other tax code/VAT code.
+;Tax Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the tax amount.
+;Tax Amount;Number(20);;Total rax amount for this item, with 4 implied decimal places.
+;Reference Number 17;Char(30);;
+;Reference Number 18;Char(30);;
+;Reference Number 19;Char(30);;
+;Reference Number 20;Char(30);;
+TPYMT;File Type Record Descriptor;Char(5);TPYMT;Identifies the file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Payment Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the deposit amount.
+;Payment Amount;Number(20);;Deposit amount paid, with 4 implied decimal places.
+TTEND;File Type Record Descriptor;Char(5);TTEND;Identifies the file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Tender Type Group;Char(6);Refer to TENT code_type for as list of valid types;High-level grouping of tender types.
+;Tender Type ID;Number(6);Refer to the pos_tender_type_head table for as list of valid types.;Low-level grouping of tender types.
+;Tender Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the value.
+;Tender Amount;Number(20);;Amount paid with this tender in the transaction, with 4 implied decimal places.
+;Cc_no;Char(40);;Credit card number.
+;Cc_auth_no;Char(16);;Authorization number for a credit card.
+;cc authorization source;Char(6);;Refer to CCAS code_type for as list of valid types.
+;cc cardholder verification;Char(6);;Refer to CCVF code_type for as list of valid types.
+;cc expiration date;Char(8);;YYYYMMDD
+;cc entry mode;Char(6);Refer to CCEM code_type for as list of valid types.;Indicates whether the credit card was swiped, thus automatically entered, or manually keyed.
+;cc terminal id;Char(5);;Terminal number from which the transaction was sent.
+;cc special condition;Char(6);;Refer to CCSC code_type for as list of valid types.
+;Voucher_no;Char(25);;Gift certificate or credit voucher serial number.
+;Coupon Number;Char(16);;Number of a manufacturer’s coupon used as a tender.
+;Coupon Reference Number;Char(16);;Additional information about the coupon, usually contained in a second bar code on the coupon.
+;Cheque Account Number;Char(30);;Account number of the check.
+;Cheque Number;Number(10);;Check number.
+;Identification Method;Char(6);Refer to IDMH code_type for list of valid types.;Identification Method (such as a driver’s license number or photo credit card).
+;Identification Id;Char(40);;Identification ID (license ID or photo card number).
+;Original Currency;Char(3);Refer to the CURRENCIES table for valid currency codes.;The original currency with which the customer made the payment.
+;Original Currency Amount;Number(20);;Amount paid with this tender in the original currency, with 4 implied decimal places.
+;Reference No 9;Char(30);;Number associated with a particular transaction type at the tender level. The sa_reference table defines what this field can contain for each transaction type.
+;Reference No 10;Char(30);;Second generic reference number at the tender level.
+;Reference No 11;Char(30);;Third generic reference number at the tender level.
+;Reference No 12;Char(30);;Fourth generic reference number at the tender level.
+TTAIL;File Type Record Descriptor;Char(5);TTAIL;Identifies file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;Transaction Record Counter;Number(10);;Number of records processed in the current transactio (only those records between transaction head and tail).
+FTAIL;File Type Record Descriptor;Char(5);FTAIL;Identifies the file record type.
+;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
+;File Record Counter;Number(10);;Number of transactions processed in the current file (only the records between the file head and tail).
