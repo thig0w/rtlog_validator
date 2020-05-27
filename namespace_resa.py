@@ -111,7 +111,6 @@ class ResaRTLOGValidate(Resource):
         """
         Run validation on the file sent
         """
-        # args = validation_parser.parse_args()
         val = Validator(rtlog_string=namespace_resa.payload["rtlog_string"])
 
         rtlog_list = []
