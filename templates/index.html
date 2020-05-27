@@ -25,6 +25,7 @@
 
 
 
+
 </style>
 <link rel="stylesheet" href="/static/js/lib/codemirror.css">
 <link rel="stylesheet" href="/static/js/themes/hopscotch.css">
@@ -52,10 +53,7 @@
                 <label class="input-group-text bg-danger text-light border-dark""
                 for="inputGroupSelect01">Version</label>
             </div>
-            <select class="custom-select bg-secondary text-light border-dark"" id="inputGroupSelect01">
-            <option selected value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <select class="custom-select bg-secondary text-light border-dark"" id="versionSelect">
             </select>
         </div>
         <div class="input-group">
@@ -73,6 +71,7 @@
     </div>
 </div>
 <script>
+// TODO: enable DOMContentLoaded
     //document.addEventListener('DOMContentLoaded', () => {
         var original_content;
         var rtlog_format;
@@ -104,6 +103,7 @@
 
         editor.on("beforeChange",function(editor,e) {
             //Call validator
+            var rtlog_version = $("#versionSelect option:selected").val()
             var jsonObj = {"rtlog_string" : original_content }
 
             var xhttp = new XMLHttpRequest();
@@ -135,17 +135,37 @@
         editor.on("update", function(editor,e) {
             console.log("update trigger");
             console.log(e);
-            tooltips.forEach((el)=>{
-                $("."+el['name']).each((index, element) => {
-                    $(element).tooltip({
-                        placement: 'top',
-                        title: el['infos'],
-                        html: true
-                    });
-                })
-            });
+            if (tooltips != null)
+                tooltips.forEach((el)=>{
+                    $("."+el['name']).each((index, element) => {
+                        $(element).tooltip({
+                            placement: 'top',
+                            title: el['infos'],
+                            html: true
+                        });
+                    })
+                });
         });
 
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            // Typical action to be performed when the document is ready:
+            var response = JSON.parse(xhttp.responseText);
+            var selected = true;
+            response.forEach((el) => {
+                $('#versionSelect').append($('<option>', {
+                    value: el['file_name'],
+                    text: el['version'],
+                    selected: selected
+                }));
+                selected = false;
+            });
+        }
+     };
+     xhttp.open("GET", "/api_resa/rtlog_versions/", true);
+     xhttp.setRequestHeader("Content-type", "application/json");
+     xhttp.send();
 
 
 
