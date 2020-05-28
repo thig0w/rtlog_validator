@@ -13,3 +13,7 @@ repos:
       - id: trailing-whitespace
       - id: requirements-txt-fixer
       - id: mixed-line-ending
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.5.1  # Use the ref you want to point at
+    hooks:
+      - id: text-unicode-replacement-char
