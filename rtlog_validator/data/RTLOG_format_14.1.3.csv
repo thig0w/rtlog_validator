@@ -160,8 +160,8 @@ TTEND;File Type Record Descriptor;Char(5);TTEND;Identifies the file record type.
 ;Voucher_no;Char(25);;Gift certificate or credit voucher serial number.
 ;Coupon Number;Char(16);;Number of a manufacturer's coupon used as a tender.
 ;Coupon Reference Number;Char(16);;Additional information about the coupon, usually contained in a second bar code on the coupon.
-;Cheque Account Number;Char(30);;Account number of the check.
-;Cheque Number;Number(10);;Check number.
+;Check Account Number;Char(30);;Account number of the check.
+;Check Number;Number(10);;Check number.
 ;Identification Method;Char(6);Refer to IDMH code_type for list of valid types.;Identification Method (such as a driver's license number or photo credit card).
 ;Identification Id;Char(40);;Identification ID (license ID or photo card number).
 ;Original Currency;Char(3);Refer to the CURRENCIES table for valid currency codes.;The original currency with which the customer made the payment.

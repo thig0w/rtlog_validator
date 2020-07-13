@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import logging
+import re
 from struct import Struct
 
 from rtlog_validator.line_definitions import RTLOG
@@ -13,6 +14,7 @@ class LineInfo(dict):
     """Class that holds line information"""
 
     def __init__(self, text, tag, line_format):
+        super().__init__()
         logging.debug("Creating field")
         self["text"] = text
         self["tag"] = tag
@@ -29,6 +31,33 @@ class LineInfo(dict):
             self["text"].encode()
         )
         return [field.decode("utf-8") for field in bin_fields]
+
+    def get_line_dict(self):
+        """Breaks the filelds of the line and return them as a dict"""
+        line_dict = {}
+        bin_fields = Struct(self.__rtlog_line_format.struct_format).unpack_from(
+            self["text"].encode()
+        )
+        line = [field.decode("utf-8") for field in bin_fields]
+        for i in self.__rtlog_line_format:
+            key = self.__rtlog_line_format[i]["name"].replace(" ", "_").lower()
+            value = None if line[i - 1].strip().__eq__("") else line[i - 1].strip()
+            if (
+                    self.__rtlog_line_format[i]["type"].__eq__("Number")
+                    and value is not None
+            ):
+                m = re.search(
+                    "(\d) implied decimal", self.__rtlog_line_format[i]["desc"]
+                )
+                try:
+                    power_factor = m.group(1)
+                except AttributeError:
+                    power_factor = 0
+                finally:
+                    value = float(value) / pow(10, int(power_factor))
+
+            line_dict[key] = value
+        return line_dict
 
     def validate_line_size(self):
         """Checks if the line has the correct size"""
@@ -73,6 +102,7 @@ class Validator(dict):
         rtlog_file="C:\\Users\\LOGIC\\Desktop\\RTLOG_30010_20200125_20200128212026.DAT",
         rtlog_string=None,
     ):
+        super().__init__()
         logging.debug(
             f"Initializing Validator: format_file = {format_file}, rtlog_file = {rtlog_file}"
         )
