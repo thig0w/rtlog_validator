@@ -43,8 +43,8 @@ class LineInfo(dict):
             key = self.__rtlog_line_format[i]["name"].replace(" ", "_").lower()
             value = None if line[i - 1].strip().__eq__("") else line[i - 1].strip()
             if (
-                    self.__rtlog_line_format[i]["type"].__eq__("Number")
-                    and value is not None
+                self.__rtlog_line_format[i]["type"].__eq__("Number")
+                and value is not None
             ):
                 m = re.search(
                     "(\d) implied decimal", self.__rtlog_line_format[i]["desc"]
