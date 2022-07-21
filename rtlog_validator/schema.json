@@ -8,6 +8,25 @@
       "$id": "#thead",
       "type": "object",
       "properties": {
+        "company": {
+          "description": "Company id",
+          "type": "string"
+        },
+        "business_date": {
+          "description": "Business date of transactions (YYYYMMDD).",
+          "type": "string",
+          "format": "date"
+        },
+        "location_number": {
+          "description": "Store or warehouse identifier.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "rtlog_originating_system": {
+          "description": "Identifies the system the RTLOG file originated from. Valid values are OMS and POS.",
+          "type": "string",
+          "maxLength": 3
+        },
         "register": {
           "description": "Till used at the store.",
           "type": "string",
@@ -174,6 +193,9 @@
         }
       },
       "required": [
+        "business_date",
+        "location_number",
+        "rtlog_originating_system",
         "register",
         "transaction_date",
         "transaction_number",
@@ -818,37 +840,11 @@
   },
   "type": "object",
   "properties": {
-    "company": {
-      "description": "Company id",
-      "type": "string"
-    },
-    "business_date": {
-      "description": "Business date of transactions (YYYYMMDD).",
-      "type": "string",
-      "format": "date"
-    },
-    "location_number": {
-      "description": "Store or warehouse identifier.",
-      "type": "string",
-      "maxLength": 10
-    },
-    "rtlog_originating_system": {
-      "description": "Identifies the system the RTLOG file originated from. Valid values are OMS and POS.",
-      "type": "string",
-      "maxLength": 3
-    },
     "thead": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/thead"
-      },
-      "default": []
+      "$ref": "#/definitions/thead"
     }
   },
   "required": [
-    "business_date",
-    "location_number",
-    "rtlog_originating_system",
     "thead"
   ]
 }

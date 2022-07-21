@@ -6,6 +6,8 @@ install:
 - pip install -r requirements.txt
 script:
 - python -c "pass"
+before_deploy:
+  - gem install faraday -v 1.8.0
 deploy:
   provider: heroku
   api_key:
