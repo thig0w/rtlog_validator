@@ -6,12 +6,14 @@ install:
 - pip install -r requirements.txt
 script:
 - python -c "pass"
+before_deploy:
+  - rvm $(travis_internal_ruby) --fuzzy do ruby -S gem install faraday -v 1.8.0
 deploy:
-  provider: heroku
-  api_key:
-    secure: EYsECIpmYiJwwkdYINi6jDgi5rayusiYFqKDkuFz4OPuPa5jjWK79a+f/k5GySq47HqKlZnK+OTpwl67ZDVBXiFRX4DHXrc9xu/0A/SCsWwEiAJ1wIWP+UqqXkrcwgJZRNPVyYqYF52Lio/s0zTzn0pKFJ7IaBpKT6u2fgIyCPF0radHd2jlxOQyE115EUAeJoYIF4ux7vYuSukkEKM9eb/GJ70J/UqfCge6+7mZ3pijZpvU5RMdwlVyKLXpo9ZlFACI3KT2xk0Xf8o+HLlDSF9CBHPpvy+9a56i3fQKmRKE3MX+bSkbF6m0SgMVJPJkrWa1wLdJJeH+rMceIAANCQZfl5aNzn90BuYsq/y0bv2DS5q1CHN/3EPwg03+zCkBIYlCPd//Ah33wwS9JAkD2159ly8CwiwSI8B39suhW3yZsPpmFZR3lGRUmY06IDzvnWZAoxOpqu2RUyByeKH4E7AGzjph09D1z/NH8Vc5ayT2ZCbNfwoaV4VyF9sRCJPttu/1msmqpdxZWm9Ko+jA+T9QU3EhHiD+N02mWXfF6opQcG/PkriSOsFXxc/ZSxYsYf58cNBLrem4kB2vYcaTV4C5QhtMKsE7pA/ocIToeh0KOqMAJRaAGXQNHHiBI6H3SMttnlLH4sOT9Jirk5s+5R5mYE+24kzu4wyhixoeS9g=
+  provider: heroku:git
+  api_key: $HEROKU_API_KEY
   app:
     master: rtlog-validator
     hml: rtlog-validator-hml
+  edge: true
 #  on:
 #    branch: master

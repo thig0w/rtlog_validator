@@ -1,0 +1,850 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/product.schema.json",
+  "title": "RTLOG",
+  "description": "Schema for Retail Transaction Log",
+  "definitions": {
+    "thead": {
+      "$id": "#thead",
+      "type": "object",
+      "properties": {
+        "company": {
+          "description": "Company id",
+          "type": "string"
+        },
+        "business_date": {
+          "description": "Business date of transactions (YYYYMMDD).",
+          "type": "string",
+          "format": "date"
+        },
+        "location_number": {
+          "description": "Store or warehouse identifier.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "rtlog_originating_system": {
+          "description": "Identifies the system the RTLOG file originated from. Valid values are OMS and POS.",
+          "type": "string",
+          "maxLength": 3
+        },
+        "register": {
+          "description": "Till used at the store.",
+          "type": "string",
+          "maxLength": 5
+        },
+        "transaction_date": {
+          "description": "Date for the transactions that were processed at the POS (YYYYMMDDHHMMSS).",
+          "type": "string",
+          "format": "date-time"
+        },
+        "transaction_number": {
+          "description": "If sa_system_options, wkstation_tran_append_ind is Y, the first 3 digits indicate the workstation ID and last 7 digits indicate the transaction number.",
+          "type": "number"
+        },
+        "cashier": {
+          "description": "Cashier identifier.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "salesperson": {
+          "description": "Salesperson identifier.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "transaction_type": {
+          "description": "Transaction type.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "sub-transaction_type": {
+          "description": "Sub-transaction type. For sale, it can be employee, drive-off, and so on.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "orig_tran_no": {
+          "description": "Populated only for post-void transactions. Transaction number for the original transaction that will be cancelled.",
+          "type": "number"
+        },
+        "orig_reg_no": {
+          "description": "Populated only for post-void transactions. Register number from the original transaction.",
+          "type": "string",
+          "maxLength": 5
+        },
+        "reason_code": {
+          "description": "Reason entered by the cashier for some transaction types. Required for Paid In and Paid out transaction types, but can also be used for voids, returns, and so on.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "vendor_number": {
+          "description": "Supplier ID for a merchandise vendor paid out transaction",
+          "type": "string",
+          "maxLength": 10
+        },
+        "vendor_invoice_number": {
+          "description": "Invoice number for a vendor paid out transaction.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "payment_reference_number": {
+          "description": "The reference number of the tender used for a vendor payout. This could be the money order number, check number, and so on.",
+          "type": "string",
+          "maxLength": 16
+        },
+        "proof_of_delivery_number": {
+          "description": "Proof of receipt number given by the vendor at the time of delivery. This field is populated for a vendor paid out transaction.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_1": {
+          "description": "The SA_REFERENCE table defines what this field can contain for each transaction type.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_2": {
+          "description": "Second generic reference number.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_3": {
+          "description": "Third generic reference number.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_4": {
+          "description": "Fourth generic reference number.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "value": {
+          "description": "Transaction value. Populated by the retailer for TOTAL transaction, populated by ReSA for SALE and RETURN transactions.",
+          "type": "number"
+        },
+        "banner_id": {
+          "description": "Banner ID of the location.",
+          "type": "number"
+        },
+        "rounded_amount": {
+          "description": "Total rounded amount, with 4  decimal places.",
+          "type": "number"
+        },
+        "rounded_off_amount": {
+          "description": "Rounded off amount, with 4  decimal places",
+          "type": "number"
+        },
+        "credit_promotion_id": {
+          "description": "Credit Promotional ID.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "reference_number_25": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_26": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_27": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "transaction_processing_system": {
+          "description": "Contains the ID of the system that processed the transaction.",
+          "type": "string",
+          "maxLength": 3
+        },
+        "tcust": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/tcust"
+          },
+          "default": []
+        },
+        "titem": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/titem"
+          },
+          "default": []
+        },
+        "ttax": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ttax"
+          },
+          "default": []
+        },
+        "tpymt": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/tpymt"
+          },
+          "default": []
+        },
+        "ttend": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ttend"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "business_date",
+        "location_number",
+        "rtlog_originating_system",
+        "register",
+        "transaction_date",
+        "transaction_number",
+        "transaction_type",
+        "transaction_processing_system"
+      ]
+    },
+    "tcust": {
+      "$id": "#tcust",
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "description": "The ID number of a customer.",
+          "type": "string",
+          "maxLength": 16
+        },
+        "customer_type_id": {
+          "description": "Customer ID type.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "customer_name": {
+          "description": "Customer name.",
+          "type": "string",
+          "maxLength": 120
+        },
+        "address_1": {
+          "description": "Customer address.",
+          "type": "string",
+          "maxLength": 240
+        },
+        "address_2": {
+          "description": "Additional field for customer address.",
+          "type": "string",
+          "maxLength": 240
+        },
+        "city": {
+          "description": "City.",
+          "type": "string",
+          "maxLength": 120
+        },
+        "state": {
+          "description": "State.",
+          "type": "string",
+          "maxLength": 12
+        },
+        "zip_code": {
+          "description": "Zip code.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "country": {
+          "description": "Country.",
+          "type": "string",
+          "maxLength": 3
+        },
+        "home_phone": {
+          "description": "Telephone number at home.",
+          "type": "string",
+          "maxLength": 20
+        },
+        "work_phone": {
+          "description": "Telephone number at work.",
+          "type": "string",
+          "maxLength": 20
+        },
+        "e_mail": {
+          "description": "E-mail address.",
+          "type": "string",
+          "maxLength": 100
+        },
+        "birthdate": {
+          "description": "Date of birth. (YYYYMMDD)",
+          "type": "string",
+          "format": "date"
+        },
+        "catt": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/catt"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "customer_id"
+      ]
+    },
+    "catt": {
+      "$id": "#catt",
+      "type": "object",
+      "properties": {
+        "attribute_type": {
+          "description": "Type of customer attribute",
+          "type": "string",
+          "maxLength": 6
+        },
+        "attribute_value": {
+          "description": "Value of customer attribute.",
+          "type": "string",
+          "maxLength": 6
+        }
+      },
+      "required": [
+        "attribute_type",
+        "attribute_value"
+      ]
+    },
+    "titem": {
+      "$id": "#titem",
+      "type": "object",
+      "properties": {
+        "item_status": {
+          "description": "Status of the item within the transaction. Valid values are: 'S' - Sale, 'R' - Return, 'V' - Voided, more options check 'SASI' code type",
+          "type": "string",
+          "maxLength": 6
+        },
+        "item_type": {
+          "description": "Identifies what type of item is transmitted. 'ITEM' - normal item, 'NMITEM' - non-merch item, more valules on 'SAIT' code type",
+          "type": "string",
+          "maxLength": 6
+        },
+        "item_number_type": {
+          "description": "Identifies the type of item number if the item type is ITEM or REF.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "format_id": {
+          "description": "Used to interpret VPLU items.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "item": {
+          "description": "Identifies the merchandise item.",
+          "type": "string",
+          "maxLength": 25
+        },
+        "reference_item": {
+          "description": "Identifies the sub-transaction level merchandise item.",
+          "type": "string",
+          "maxLength": 25
+        },
+        "non-merchandise_item": {
+          "description": "Identifies a non-merchandise item.",
+          "type": "string",
+          "maxLength": 25
+        },
+        "voucher": {
+          "description": "Gift certificate number.",
+          "type": "string",
+          "maxLength": 25
+        },
+        "department": {
+          "description": "This is filled in by saimptlog.",
+          "type": "number"
+        },
+        "class": {
+          "description": "Class of item sold or returned. Not required from a retailer. This is filled in by saimptlog.",
+          "type": "number"
+        },
+        "subclass": {
+          "description": "Subclass of the item sold or returned. Not required from a retailer. This is filled in by saimptlog.",
+          "type": "number"
+        },
+        "quantity": {
+          "description": "Number of items purchased, with 4 decimal places.",
+          "type": "number"
+        },
+        "selling_unit_of_measure": {
+          "description": "Unit of measure of the item's quantity. 'EA' - Each",
+          "type": "string",
+          "maxLength": 4
+        },
+        "unit_retail": {
+          "description": "Unit retail, with 4 decimal places.",
+          "type": "number"
+        },
+        "override_reason": {
+          "description": "This column is populated when an item's price has been overridden at the POS to define why it was overridden.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "original_unit_retail": {
+          "description": "Value, with 4 decimal places. This column is populated when the item's price was overridden at the POS and the item's original unit retail is known.",
+          "type": "number"
+        },
+        "taxable_indicator": {
+          "description": "Indicates whether or not item is taxable.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "pump": {
+          "description": "Fuel pump identifier.",
+          "type": "string",
+          "maxLength": 8
+        },
+        "reference_number_5": {
+          "description": "Number associated with a particular item within a transaction, for example, special order number. The sa_reference table defines what this field can contain for each transaction type.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_6": {
+          "description": "Second generic reference number at the item level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_7": {
+          "description": "Third generic reference number at the item level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_8": {
+          "description": "Fourth generic reference number at the item level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "item_swiped_ind": {
+          "description": "Indicates if the item was automatically entered into the POS system or if it had to be manually keyed.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "return_reason_code": {
+          "description": "Refer to SARR code_type for a list of valid codes. The reason an item was returned.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "salesperson": {
+          "description": "The salesperson who sold the item.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "expiration_date": {
+          "description": "Gift certificate expiration date (YYYYMMDD).",
+          "type": "string",
+          "format": "date"
+        },
+        "drop_ship_ind": {
+          "description": "Refer to YSNO code type for a list of valid codes. Indicates whether the item is part of a drop shipment.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "uom_qty": {
+          "description": "Quantity of items purchased in the given UOM, with 4 decimal places.",
+          "type": "number"
+        },
+        "catchweight_ind": {
+          "description": "Identifies if the item is a catchweight item.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "selling_item": {
+          "description": "Identifies the selling item.",
+          "type": "string",
+          "maxLength": 25
+        },
+        "customer_order_line_no": {
+          "description": "Identifies the customer order number.",
+          "type": "number"
+        },
+        "media_id": {
+          "description": "Identifies the customer media ID.",
+          "type": "number"
+        },
+        "total_igtax_amount": {
+          "description": "Contains the Igtax amount.",
+          "type": "number"
+        },
+        "unique_id": {
+          "description": "Unique Identification Number. This field identifies the serial number of the item.",
+          "type": "string",
+          "maxLength": 128
+        },
+        "customer_order_number": {
+          "description": "Contains the customer order ID.",
+          "type": "string",
+          "maxLength": 48
+        },
+        "customer_order_date": {
+          "description": "Contains the customer order date. Format is: YYYYMMDDHHMMSS",
+          "type": "string",
+          "format": "date-time"
+        },
+        "fulfillment_order_number": {
+          "description": "Contains the order ID of the fulfillment order.",
+          "type": "string",
+          "maxLength": 48
+        },
+        "no_inventory_return": {
+          "description": "Indicates if there is an associated inventory with the return transaction with an External Customer Order sales type.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "sales_type": {
+          "description": "Indicates if the transaction is an In Store Customer Order, External Customer Order, or Regular Sale.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "return_warehouse": {
+          "description": "Contains the ID of the physical warehouse to which the inventory is returned.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "return_disposition": {
+          "description": "Contains the return disposition of the returned items.",
+          "type": "string",
+          "maxLength": 10
+        },
+        "idisc": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/idisc"
+          },
+          "default": []
+        },
+        "igtax": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/igtax"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "item_status",
+        "item_type",
+        "item_number_type",
+        "quantity",
+        "selling_unit_of_measure",
+        "unit_retail",
+        "original_unit_retail",
+        "taxable_indicator",
+        "item_swiped_ind",
+        "uom_qty",
+        "sales_type"
+      ]
+    },
+    "idisc": {
+      "$id": "#idisc",
+      "type": "object",
+      "properties": {
+        "rms_promotion_number": {
+          "description": "The RMS promotion type.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "discount_reference_number": {
+          "description": "Discount reference number associated with the discount type. For example, if the discount type is a promotion, this contains the promotion number.",
+          "type": "number"
+        },
+        "discount_type": {
+          "description": "The type of discount within a promotion. This allows a retailer to further break down coupon discounts within the In-store promotion, for example.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "coupon_number": {
+          "description": "Number of a store coupon used as a discount.",
+          "type": "string",
+          "maxLength": 16
+        },
+        "coupon_reference_number": {
+          "description": "Additional information about the coupon, usually contained in a second bar code on the coupon.",
+          "type": "string",
+          "maxLength": 16
+        },
+        "quantity": {
+          "description": "The quantity purchased for which the discount is applied, with 4  decimal places.",
+          "type": "number"
+        },
+        "unit_discount_amount": {
+          "description": "Unit discount amount for this item, with 4  decimal places.",
+          "type": "number"
+        },
+        "reference_number_13": {
+          "description": "The sa_reference table defines what this field can contain for each transaction type.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_14": {
+          "description": "Second generic reference number at the discount level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_15": {
+          "description": "Third generic reference number at the discount level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_16": {
+          "description": "Fourth generic reference number at the discount level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "uom_qty": {
+          "description": "Quantity of items purchased in the given UOM with 4 decimal places.",
+          "type": "number"
+        },
+        "catchweight_ind": {
+          "description": "Identifies if the item is a catchweight item.",
+          "type": "string",
+          "maxLength": 1
+        },
+        "promo_component": {
+          "description": "If the discount is a promotion, this field contains the promotion component value associated with the promotion (discount reference number).",
+          "type": "number"
+        }
+      },
+      "required": [
+        "rms_promotion_number",
+        "discount_type",
+        "quantity",
+        "unit_discount_amount",
+        "uom_qty"
+      ]
+    },
+    "igtax": {
+      "$id": "#igtax",
+      "type": "object",
+      "properties": {
+        "tax_authority": {
+          "description": "",
+          "type": "number"
+        },
+        "igtax_code": {
+          "description": "IGtax code (tax code/VAT code) to represent whether it is a State, City, or some other tax code/VAT code.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "igtax_rate": {
+          "description": "Igtax rate, with 4  decimal places.",
+          "type": "number"
+        },
+        "igtax_amount": {
+          "description": "Total igtax amount for this item, with 5  decimal places.",
+          "type": "number"
+        },
+        "reference_number_21": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_22": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_23": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_24": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        }
+      },
+      "required": [
+        "igtax_code",
+        "igtax_rate",
+        "igtax_amount"
+      ]
+    },
+    "ttax": {
+      "$id": "#ttax",
+      "type": "object",
+      "properties": {
+        "tax_code": {
+          "description": "Tax code (tax code/VAT code) to represent whether it is a State, City, or some other tax code/VAT code.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "tax_amount": {
+          "description": "Total rax amount for this item, with 4 decimal places.",
+          "type": "number"
+        },
+        "reference_number_17": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_18": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_19": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_number_20": {
+          "description": "",
+          "type": "string",
+          "maxLength": 30
+        }
+      },
+      "required": [
+        "tax_code",
+        "tax_amount"
+      ]
+    },
+    "tpymt": {
+      "$id": "#tpymt",
+      "type": "object",
+      "properties": {
+        "payment_amount": {
+          "description": "Deposit amount paid, with 4  decimal places.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "payment_amount"
+      ]
+    },
+    "ttend": {
+      "$id": "#ttend",
+      "type": "object",
+      "properties": {
+        "tender_type_group": {
+          "description": "High-level grouping of tender types.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "tender_type_id": {
+          "description": "Low-level grouping of tender types.",
+          "type": "number"
+        },
+        "tender_amount": {
+          "description": "Amount paid with this tender in the transaction, with 4  decimal places.",
+          "type": "number"
+        },
+        "cc_no": {
+          "description": "Credit card number.",
+          "type": "string",
+          "maxLength": 40
+        },
+        "cc_auth_no": {
+          "description": "Authorization number for a credit card.",
+          "type": "string",
+          "maxLength": 16
+        },
+        "cc_authorization_source": {
+          "description": "Refer to CCAS code_type for as list of valid types.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "cc_cardholder_verification": {
+          "description": "Refer to CCVF code_type for as list of valid types.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "cc_expiration_date": {
+          "description": "YYYYMMDD",
+          "type": "string",
+          "format": "date"
+        },
+        "cc_entry_mode": {
+          "description": "Indicates whether the credit card was swiped, thus automatically entered, or manually keyed.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "cc_terminal_id": {
+          "description": "Terminal number from which the transaction was sent.",
+          "type": "string",
+          "maxLength": 5
+        },
+        "cc_special_condition": {
+          "description": "Refer to CCSC code_type for as list of valid types.",
+          "type": "string",
+          "maxLength": 6
+        },
+        "voucher_no": {
+          "description": "Gift certificate or credit voucher serial number.",
+          "type": "string",
+          "maxLength": 25
+        },
+        "coupon_number": {
+          "description": "Number of a manufacturer's coupon used as a tender.",
+          "type": "string",
+          "maxLength": 16
+        },
+        "coupon_reference_number": {
+          "description": "Additional information about the coupon, usually contained in a second bar code on the coupon.",
+          "type": "string",
+          "maxLength": 16
+        },
+        "check_account_number": {
+          "description": "Account number of the check.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "check_number": {
+          "description": "Check number.",
+          "type": "number"
+        },
+        "identification_method": {
+          "description": "Identification Method (such as a driver's license number or photo credit card).",
+          "type": "string",
+          "maxLength": 6
+        },
+        "identification_id": {
+          "description": "Identification ID (license ID or photo card number).",
+          "type": "string",
+          "maxLength": 40
+        },
+        "original_currency": {
+          "description": "The original currency with which the customer made the payment.",
+          "type": "string",
+          "maxLength": 3
+        },
+        "original_currency_amount": {
+          "description": "Amount paid with this tender in the original currency, with 4  decimal places.",
+          "type": "number"
+        },
+        "reference_no_9": {
+          "description": "Number associated with a particular transaction type at the tender level. The sa_reference table defines what this field can contain for each transaction type.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_no_10": {
+          "description": "Second generic reference number at the tender level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_no_11": {
+          "description": "Third generic reference number at the tender level.",
+          "type": "string",
+          "maxLength": 30
+        },
+        "reference_no_12": {
+          "description": "Fourth generic reference number at the tender level.",
+          "type": "string",
+          "maxLength": 30
+        }
+      },
+      "required": [
+        "tender_type_group",
+        "tender_type_id",
+        "tender_amount"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "thead": {
+      "$ref": "#/definitions/thead"
+    }
+  },
+  "required": [
+    "thead"
+  ]
+}

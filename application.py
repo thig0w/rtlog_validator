@@ -12,11 +12,17 @@ def index():
     return render_template("index.html")
 
 
-api = Api(app, version="0.1", title="RPK Api", description="Having fun", doc="/doc/")
+api = Api(
+    app,
+    version="0.1",
+    title="RPK Api",
+    description="RPK apis used on the web application",
+    doc="/doc/",
+)
 api.add_namespace(namespace_resa)
 
 if __name__ == "__main__" or __name__ == "__builtin__":
     import os
 
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="127.0.0.1", port=port)

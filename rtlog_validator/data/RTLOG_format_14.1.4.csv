@@ -1,4 +1,4 @@
-NOMA DA LINHA;NOME DO CAMPO;TIPO;DEFAULT;DESCRI√á√ÉO
+NOMA DA LINHA;NOME DO CAMPO;TIPO;DEFAULT;DESCRI«√O
 FHEAD;File Type Record Descriptor;Char(5);FHEAD;Identifies file record type.
 ;File Line Identifier;Number(10);Specified by external system;ID of the current line being processed by input file.
 ;File Type Definition;Char(4);RTLG;Identifies file as Oracle Retail TLOG.
@@ -73,7 +73,7 @@ TITEM;File Type Record Descriptor;Char(5);TITEM;Identifies file record type.
 ;Subclass;Number(4);Subclass of the item;Subclass of the item sold or returned. Not required from a retailer. This is filled in by saimptlog.
 ;Quantity Sign;Char(1);Refer to SIGN code_type for a list of valid codes.;Sign of the quantity
 ;Quantity;Number(12);;Number of items purchased, with 4 decimal places.
-;Selling Unit of Measure;Char(4);;Unit of measure of the item's quantity.
+;Selling Unit of Measure;Char(4);;Unit of measure of the itemís quantity.
 ;Unit Retail;Number(20);;Unit retail, with 4 implied decimal places.
 ;Override Reason;Char(6);Refer to ORRC code_type for a list of valid codes.;This column is populated when an item's price has been overridden at the POS to define why it was overridden.
 ;Original Unit Retail;Number(20);;Value, with 4 implied decimal places. This column is populated when the item's price was overridden at the POS and the item's original unit retail is known.
@@ -158,11 +158,11 @@ TTEND;File Type Record Descriptor;Char(5);TTEND;Identifies the file record type.
 ;cc terminal id;Char(5);;Terminal number from which the transaction was sent.
 ;cc special condition;Char(6);;Refer to CCSC code_type for as list of valid types.
 ;Voucher_no;Char(25);;Gift certificate or credit voucher serial number.
-;Coupon Number;Char(16);;Number of a manufacturer's coupon used as a tender.
+;Coupon Number;Char(16);;Number of a manufacturerís coupon used as a tender.
 ;Coupon Reference Number;Char(16);;Additional information about the coupon, usually contained in a second bar code on the coupon.
-;Check Account Number;Char(30);;Account number of the check.
-;Check Number;Number(10);;Check number.
-;Identification Method;Char(6);Refer to IDMH code_type for list of valid types.;Identification Method (such as a driver's license number or photo credit card).
+;Cheque Account Number;Char(30);;Account number of the check.
+;Cheque Number;Number(10);;Check number.
+;Identification Method;Char(6);Refer to IDMH code_type for list of valid types.;Identification Method (such as a driverís license number or photo credit card).
 ;Identification Id;Char(40);;Identification ID (license ID or photo card number).
 ;Original Currency;Char(3);Refer to the CURRENCIES table for valid currency codes.;The original currency with which the customer made the payment.
 ;Original Currency Amount;Number(20);;Amount paid with this tender in the original currency, with 4 implied decimal places.
