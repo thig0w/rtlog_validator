@@ -2,4 +2,4 @@ flask
 flask_restplus
 gunicorn
 #added the line below to avoid flask_restplus problem
-Werkzeug==0.16.1
+Werkzeug==2.2.3
